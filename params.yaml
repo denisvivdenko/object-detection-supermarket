@@ -1,0 +1,5 @@
+base:
+  random_state: 42
+
+yolo_preprocessing:
+  n_augmentations: 2
