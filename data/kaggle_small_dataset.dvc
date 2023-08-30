@@ -1,0 +1,5 @@
+outs:
+- md5: d091bd179e442bdace35b186831a7c1b.dir
+  size: 145984992
+  nfiles: 91
+  path: kaggle_small_dataset
