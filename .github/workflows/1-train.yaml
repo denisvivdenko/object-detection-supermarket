@@ -2,11 +2,10 @@ name: experimenting-on-cloud
 on:
   workflow_dispatch: {}
   push:
-    branches:
-      - 'exp*'
     paths:
       - "data/**"
       - "src/**"
+      - "yolo_params.yaml"
       - "params.yaml"
       - "dvc.*"
       - ".github/workflows/**"
@@ -44,6 +43,5 @@ jobs:
           dvc push
 
           echo "# Experiment" > report.md
-          echo "## Metrics" >> report.md
-          cat metrics/metrics.json >> report.md
+          cml publish metrics/plots/result.jpg --md >> report.md          
           cml comment create report.md
