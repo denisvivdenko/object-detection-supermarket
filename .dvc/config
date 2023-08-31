@@ -1,0 +1,4 @@
+[core]
+    remote = remote_gcs
+['remote "remote_gcs"']
+    url = gs://llm-exam-experiments

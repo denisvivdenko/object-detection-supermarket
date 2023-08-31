@@ -1,0 +1,49 @@
+name: experimenting-on-cloud
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - 'exp*'
+    paths:
+      - "data/**"
+      - "src/**"
+      - "params.yaml"
+      - "dvc.*"
+      - ".github/workflows/**"
+
+jobs:            
+  experiment:
+    runs-on: [self-hosted, cml-gpu]
+    env:
+      REPO_TOKEN: ${{ secrets.MY_GITHUB_PAT }}
+      GOOGLE_APPLICATION_CREDENTIALS: gcp-credentials.json
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+        
+      - name: cml setup
+        run: cml ci
+
+      - name: Install dependencies
+        run: |
+          pip install -e .
+
+      - name: Setup DVC
+        run: |
+          echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}" | base64 -d > gcp-credentials.json
+          chmod 600 gcp-credentials.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$PWD/gcp-credentials.json" >> $GITHUB_ENV
+
+          dvc pull
+      
+      - name: dvc-repro-cml
+        run: |
+          dvc repro
+          dvc push
+
+          echo "# Experiment" > report.md
+          echo "## Metrics" >> report.md
+          cat metrics/metrics.json >> report.md
+          cml comment create report.md
