@@ -1,0 +1,7 @@
+path: /home/denys/object-detection-supermarket/data/dataset
+train: images/train
+test: images/test
+val: images/val
+
+names:
+  0: 'object'
