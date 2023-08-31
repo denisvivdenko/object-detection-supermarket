@@ -3,3 +3,7 @@ base:
 
 yolo_preprocessing:
   n_augmentations: 2
+  data_path: data/dataset
+  images_dir: data/SKU110K_fixed/images
+  unprocessed_dataset_path: data/SKU110K_fixed
+  max_batch_size: 10
