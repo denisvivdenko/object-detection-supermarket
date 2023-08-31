@@ -1,0 +1,33 @@
+stages:
+  data_preprocessing:
+    cmd: python src/stages/data_preprocessing.py --config=params.yaml
+    deps:
+    - data/SKU110K_fixed
+    params:
+    - base
+    - yolo_preprocessing
+    outs:
+    - data/dataset
+  train:
+    cmd: python src/stages/train.py --config=params.yaml
+    deps:
+    - data/dataset
+    - models/yolov8n.pt
+    params:
+    - base
+    - training
+    - yolo_preprocessing
+    outs:
+    - models/yolo_trained_model.pt
+    - runs
+  evaluate:
+    cmd: python src/stages/evaluate.py --config=params.yaml
+    deps:
+    - models/yolo_trained_model.pt
+    params:
+    - base
+    - evaluation
+    - training
+    - yolo_preprocessing
+    plots:
+    - metrics/plots

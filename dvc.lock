@@ -1,0 +1,97 @@
+schema: '2.0'
+stages:
+  data_preprocessing:
+    cmd: python src/stages/data_preprocessing.py --config=params.yaml
+    deps:
+    - path: data/SKU110K_fixed
+      hash: md5
+      md5: cf62ba74c1ee35825611f7eb715bb94a.dir
+      size: 13014663172
+      nfiles: 11748
+    params:
+      params.yaml:
+        base:
+          random_state: 42
+        yolo_preprocessing:
+          n_augmentations: 2
+          data_path: data/dataset
+          images_dir: data/SKU110K_fixed/images
+          unprocessed_dataset_path: data/SKU110K_fixed
+          max_batch_size: 100
+    outs:
+    - path: data/dataset
+      hash: md5
+      md5: f21df82403c585a43a1ee480a37d77dd.dir
+      size: 336640651
+      nfiles: 1818
+  train:
+    cmd: python src/stages/train.py --config=params.yaml
+    deps:
+    - path: data/dataset
+      hash: md5
+      md5: cda45b1ec729dd4bf07da4e3a3c93489.dir
+      size: 338575446
+      nfiles: 1820
+    - path: models/yolov8n.pt
+      hash: md5
+      md5: 0305608151dd1725c9d7da6882ae52d5
+      size: 6534387
+    params:
+      params.yaml:
+        base:
+          random_state: 42
+        training:
+          name: experiment-1
+          base_model_path: models/yolov8n.pt
+          save_fpath: models/yolo_trained_model.pt
+          yolo_params: yolo_params.yaml
+          epochs: 1
+          batch_size: 1
+        yolo_preprocessing:
+          n_augmentations: 2
+          data_path: data/dataset
+          images_dir: data/SKU110K_fixed/images
+          unprocessed_dataset_path: data/SKU110K_fixed
+          max_batch_size: 100
+    outs:
+    - path: models/yolo_trained_model.pt
+      hash: md5
+      md5: 3bac5c7125e7977360b3e3c00c5cd813
+      size: 6217518
+    - path: runs
+      hash: md5
+      md5: 82d47e077012bbaa667af6b441993793.dir
+      size: 15175372
+      nfiles: 22
+  evaluate:
+    cmd: python src/stages/evaluate.py --config=params.yaml
+    deps:
+    - path: models/yolo_trained_model.pt
+      hash: md5
+      md5: 3bac5c7125e7977360b3e3c00c5cd813
+      size: 6217518
+    params:
+      params.yaml:
+        base:
+          random_state: 42
+        evaluation:
+          models_dir: runs/detect
+        training:
+          name: experiment-1
+          base_model_path: models/yolov8n.pt
+          save_fpath: models/yolo_trained_model.pt
+          yolo_params: yolo_params.yaml
+          epochs: 1
+          batch_size: 1
+        yolo_preprocessing:
+          n_augmentations: 2
+          data_path: data/dataset
+          images_dir: data/SKU110K_fixed/images
+          unprocessed_dataset_path: data/SKU110K_fixed
+          max_batch_size: 100
+    outs:
+    - path: metrics/plots
+      hash: md5
+      md5: fb296b25eec77b3cbe76196b608832d6.dir
+      size: 1968765
+      nfiles: 1
