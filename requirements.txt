@@ -1,5 +1,15 @@
+pyparsing==3.1.1
+urllib3==2.0.4
+celery==5.3.1
+diskcache==5.6.1
+kombu==5.3.1
+matplotlib
+kaggle-project
+
 PyYAML==6.0.1
 PyYAML==6.0.1
 setuptools==59.6.0
-ultralystics
+ultralytics
 pillow
+dvc
+dvc-gs
