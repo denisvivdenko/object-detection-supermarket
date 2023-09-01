@@ -6,15 +6,15 @@ yolo_preprocessing:
   data_path: data/dataset
   images_dir: data/SKU110K_fixed/images
   unprocessed_dataset_path: data/SKU110K_fixed
-  max_batch_size: 200
+  max_batch_size: 300
 
 training:
   name: "experiment-1"
   base_model_path: models/yolov8n.pt
   save_fpath: models/yolo_trained_model.pt
   yolo_params: "yolo_params.yaml"
-  epochs: 1
-  batch_size: 1
+  epochs: 10
+  batch_size: 4
 
 evaluation:
   models_dir: "runs/detect"

@@ -1,14 +1,18 @@
 from ultralytics import YOLO
+import torch
 import os
 import shutil
 
 def train_yolo(params: dict) -> None:
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+
     model = YOLO(params["training"]["base_model_path"])
     model.train(
         data=params["training"]["yolo_params"],
         epochs=params["training"]["epochs"],
         batch=params["training"]["batch_size"],
         name=params["training"]["name"],
+        device=device
     )
     save_model(params)
 
