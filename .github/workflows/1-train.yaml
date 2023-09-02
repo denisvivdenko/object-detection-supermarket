@@ -35,7 +35,7 @@ jobs:
           chmod 600 gcp-credentials.json
           echo "GOOGLE_APPLICATION_CREDENTIALS=$PWD/gcp-credentials.json" >> $GITHUB_ENV
 
-          dvc pull
+          dvc pull -v
       
       - name: dvc-repro-cml
         run: |
