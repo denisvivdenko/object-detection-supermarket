@@ -17,21 +17,21 @@ stages:
           data_path: data/dataset
           images_dir: data/SKU110K_fixed/images
           unprocessed_dataset_path: data/SKU110K_fixed
-          max_batch_size: 100
+          max_batch_size: 50
     outs:
     - path: data/dataset
       hash: md5
-      md5: f21df82403c585a43a1ee480a37d77dd.dir
-      size: 336640651
-      nfiles: 1818
+      md5: 43159d469c82104ce8a5ea1033afc8cf.dir
+      size: 171502723
+      nfiles: 918
   train:
     cmd: python src/stages/train.py --config=params.yaml
     deps:
     - path: data/dataset
       hash: md5
-      md5: cda45b1ec729dd4bf07da4e3a3c93489.dir
-      size: 338575446
-      nfiles: 1820
+      md5: e113ee1f0393b3eb42eb4502c641c4a4.dir
+      size: 172472888
+      nfiles: 920
     - path: models/yolov8n.pt
       hash: md5
       md5: 0305608151dd1725c9d7da6882ae52d5
@@ -46,29 +46,29 @@ stages:
           save_fpath: models/yolo_trained_model.pt
           yolo_params: yolo_params.yaml
           epochs: 1
-          batch_size: 1
+          batch_size: 4
         yolo_preprocessing:
           n_augmentations: 2
           data_path: data/dataset
           images_dir: data/SKU110K_fixed/images
           unprocessed_dataset_path: data/SKU110K_fixed
-          max_batch_size: 100
+          max_batch_size: 50
     outs:
     - path: models/yolo_trained_model.pt
       hash: md5
-      md5: 3bac5c7125e7977360b3e3c00c5cd813
+      md5: 9775808a430e23dd4ab1550e773a4c84
       size: 6217518
     - path: runs
       hash: md5
-      md5: 82d47e077012bbaa667af6b441993793.dir
-      size: 15175372
+      md5: 2d1a49142c3dda6dabd65797c38fc059.dir
+      size: 19487713
       nfiles: 22
   evaluate:
     cmd: python src/stages/evaluate.py --config=params.yaml
     deps:
     - path: models/yolo_trained_model.pt
       hash: md5
-      md5: 3bac5c7125e7977360b3e3c00c5cd813
+      md5: 9775808a430e23dd4ab1550e773a4c84
       size: 6217518
     params:
       params.yaml:
@@ -82,16 +82,16 @@ stages:
           save_fpath: models/yolo_trained_model.pt
           yolo_params: yolo_params.yaml
           epochs: 1
-          batch_size: 1
+          batch_size: 4
         yolo_preprocessing:
           n_augmentations: 2
           data_path: data/dataset
           images_dir: data/SKU110K_fixed/images
           unprocessed_dataset_path: data/SKU110K_fixed
-          max_batch_size: 100
+          max_batch_size: 50
     outs:
     - path: metrics/plots
       hash: md5
-      md5: fb296b25eec77b3cbe76196b608832d6.dir
-      size: 1968765
+      md5: aa65ee608e92869953cf0454f74a2f81.dir
+      size: 1868356
       nfiles: 1
