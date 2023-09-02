@@ -7,7 +7,6 @@ deploy_data_processing_stage:
 
 deploy_train_stage:
 	dvc stage add --force --name train \
-	--deps data/dataset \
 	--deps models/yolov8n.pt \
 	--outs models/yolo_trained_model.pt \
 	--outs runs \
@@ -20,3 +19,9 @@ deploy_evaluate_stage:
 	--plots metrics/plots \
 	--params base,yolo_preprocessing,training,evaluation \
 	python src/stages/evaluate.py --config="params.yaml"
+
+
+deploy:
+	make deploy_data_processing_stage; \
+	make deploy_train_stage; \
+	make deploy_evaluate_stage; \
